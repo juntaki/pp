@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"text/tabwriter"
@@ -164,6 +165,7 @@ func (p *printer) printMap() {
 	}
 	p.indented(func() {
 		keys := p.value.MapKeys()
+		sort.Slice(keys, func(i int, j int) bool { return p.format(keys[i]) < p.format(keys[j]) })
 		for i := 0; i < p.value.Len(); i++ {
 			value := p.value.MapIndex(keys[i])
 			p.indentPrintf("%s:\t%s,\n", p.format(keys[i]), p.format(value))
